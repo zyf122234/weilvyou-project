@@ -1,0 +1,72 @@
+server:
+  port: ${TRAVEL_GATEWAY_PORT}
+
+spring:
+  config:
+    import:
+      - optional:file:.env[.properties]
+      - optional:file:../.env[.properties]
+  application:
+    name: travel-gateway
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      timeout: ${REDIS_TIMEOUT}
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR}
+      config:
+        server-addr: ${NACOS_SERVER_ADDR}
+        file-extension: yml
+        import-check:
+          enabled: false
+    gateway:
+      routes:
+        - id: travel-user
+          uri: lb://travel-user
+          predicates:
+            - Path=/api/user/**
+          filters:
+            - StripPrefix=1
+
+        - id: travel-product
+          uri: lb://travel-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - StripPrefix=1
+
+        - id: travel-order
+          uri: lb://travel-order
+          predicates:
+            - Path=/api/order/**
+          filters:
+            - StripPrefix=1
+
+        - id: travel-ai
+          uri: lb://travel-ai
+          predicates:
+            - Path=/api/ai/**
+          filters:
+            - StripPrefix=1
+
+        - id: travel-user-uploads
+          uri: lb://travel-user
+          predicates:
+            - Path=/api/uploads/**
+          filters:
+            - StripPrefix=1
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns: ${GATEWAY_CORS_ALLOWED_ORIGIN_PATTERNS}
+            allowedMethods: ${GATEWAY_CORS_ALLOWED_METHODS}
+            allowedHeaders: ${GATEWAY_CORS_ALLOWED_HEADERS}
+            allowCredentials: ${GATEWAY_CORS_ALLOW_CREDENTIALS}
+
+travel:
+  jwt:
+    secret: ${TRAVEL_JWT_SECRET}
+    expiration-ms: ${TRAVEL_JWT_EXPIRATION_MS}

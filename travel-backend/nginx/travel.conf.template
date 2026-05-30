@@ -1,0 +1,96 @@
+proxy_cache_path /var/cache/nginx/travel
+    levels=1:2
+    keys_zone=travel_home_cache:100m
+    max_size=${NGINX_CACHE_MAX_SIZE}
+    inactive=${NGINX_CACHE_INACTIVE}
+    use_temp_path=off;
+
+map "$arg_current|$arg_all|$arg_keyword|$arg_city|$arg_starName|$arg_brand|$arg_priceRange" $home_hotel_cacheable {
+    default 0;
+    "1|true|||||" 1;
+}
+
+map $home_hotel_cacheable $skip_home_hotel_cache {
+    1 0;
+    default 1;
+}
+
+map $home_hotel_cacheable $home_hotel_cache_key {
+    1 "$scheme|$request_method|$host|/api/product/hotel/search|home-all";
+    default "$scheme|$request_method|$host|$request_uri";
+}
+
+upstream travel_gateway_upstream {
+    server travel-gateway:${TRAVEL_GATEWAY_PORT};
+    keepalive ${NGINX_UPSTREAM_KEEPALIVE};
+}
+
+server {
+    listen 80;
+    server_name _;
+
+    client_max_body_size 20m;
+
+    location = /health {
+        access_log off;
+        add_header Content-Type text/plain;
+        return 200 "ok";
+    }
+
+    location = /api/product/hotel/search {
+        proxy_pass http://travel_gateway_upstream;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Connection "";
+
+        proxy_connect_timeout 5s;
+        proxy_send_timeout 30s;
+        proxy_read_timeout 30s;
+
+        proxy_buffering on;
+        proxy_buffers 32 64k;
+        proxy_busy_buffers_size 128k;
+
+        proxy_cache travel_home_cache;
+        proxy_cache_key $home_hotel_cache_key;
+        proxy_cache_methods GET HEAD;
+        proxy_cache_min_uses 1;
+        proxy_cache_lock on;
+        proxy_cache_lock_timeout 5s;
+        proxy_cache_background_update on;
+        proxy_cache_valid 200 ${NGINX_HOME_CACHE_TTL};
+        proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
+        proxy_set_header Accept-Encoding "";
+        proxy_ignore_headers X-Accel-Expires Cache-Control Expires Set-Cookie Vary;
+        proxy_hide_header Cache-Control;
+        proxy_hide_header Pragma;
+        proxy_hide_header Expires;
+        proxy_hide_header Set-Cookie;
+        proxy_hide_header Vary;
+        proxy_cache_bypass $skip_home_hotel_cache;
+        proxy_no_cache $skip_home_hotel_cache;
+
+        add_header Cache-Control "public, max-age=${NGINX_HOME_CACHE_TTL}" always;
+        add_header X-Cache-Status $upstream_cache_status always;
+        add_header X-Home-Cacheable $home_hotel_cacheable always;
+    }
+
+    location / {
+        proxy_pass http://travel_gateway_upstream;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Connection "";
+
+        proxy_connect_timeout 5s;
+        proxy_send_timeout 30s;
+        proxy_read_timeout 30s;
+
+        add_header X-Cache-Status BYPASS always;
+    }
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-admin/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-admin/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-ai/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-ai/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-common/travel-common-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-common/travel-common-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-common/travel-common-data/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-common/travel-common-data/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-common/travel-common-security/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-common/travel-common-security/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-common/travel-common-web/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-common/travel-common-web/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-gateway/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-order/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-order/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-product/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-product/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-user/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/travel-user/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

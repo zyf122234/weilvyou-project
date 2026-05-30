@@ -1,0 +1,70 @@
+server:
+  port: ${TRAVEL_PRODUCT_PORT}
+
+spring:
+  config:
+    import:
+      - optional:file:.env[.properties]
+      - optional:file:../.env[.properties]
+  application:
+    name: travel-product
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR}
+      config:
+        server-addr: ${NACOS_SERVER_ADDR}
+        file-extension: yml
+        import-check:
+          enabled: false
+  datasource:
+    url: ${PRODUCT_DATASOURCE_URL}
+    username: ${MYSQL_ROOT_USER}
+    password: ${MYSQL_ROOT_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      timeout: ${REDIS_TIMEOUT}
+  servlet:
+    multipart:
+      max-file-size: ${TRAVEL_UPLOAD_MAX_FILE_SIZE}
+      max-request-size: ${TRAVEL_UPLOAD_MAX_REQUEST_SIZE}
+
+feign:
+  sentinel:
+    enabled: ${FEIGN_SENTINEL_ENABLED}
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+travel:
+  jwt:
+    secret: ${TRAVEL_JWT_SECRET}
+    expiration-ms: ${TRAVEL_JWT_EXPIRATION_MS}
+  service:
+    user-base-url: ${TRAVEL_USER_BASE_URL}
+  upload:
+    product-dir: ${TRAVEL_UPLOAD_PRODUCT_DIR}
+  elasticsearch:
+    uris: ${TRAVEL_ELASTICSEARCH_URIS}
+  hotel:
+    home-cache:
+      redis-key: ${PRODUCT_HOME_HOTEL_CACHE_REDIS_KEY}
+      redis-ttl: ${PRODUCT_HOME_HOTEL_CACHE_REDIS_TTL}
+      local-ttl: ${PRODUCT_HOME_HOTEL_CACHE_LOCAL_TTL}
+      local-max-size: ${PRODUCT_HOME_HOTEL_CACHE_LOCAL_MAX_SIZE}
+      nginx-purge-enabled: ${PRODUCT_HOME_HOTEL_CACHE_NGINX_PURGE_ENABLED:true}
+      nginx-cache-path: ${PRODUCT_HOME_HOTEL_CACHE_NGINX_CACHE_PATH:/var/cache/nginx/travel}
+  security:
+    white-list:
+      - /product/published
+      - /product/published/**
+      - /product/hotel/search
+      - /swagger-ui/**
+      - /v3/api-docs/**
+      - /doc.html

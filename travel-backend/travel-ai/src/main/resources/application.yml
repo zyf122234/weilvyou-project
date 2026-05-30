@@ -1,0 +1,74 @@
+server:
+  port: ${TRAVEL_AI_PORT}
+
+spring:
+  config:
+    import:
+      - optional:file:.env[.properties]
+      - optional:file:../.env[.properties]
+  main:
+    lazy-initialization: ${AI_LAZY_INITIALIZATION}
+  application:
+    name: travel-ai
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR}
+      config:
+        server-addr: ${NACOS_SERVER_ADDR}
+        file-extension: yml
+        import-check:
+          enabled: false
+  datasource:
+    url: ${AI_DATASOURCE_URL}
+    username: ${MYSQL_ROOT_USER}
+    password: ${MYSQL_ROOT_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: ${AI_DATASOURCE_MAX_POOL_SIZE}
+      minimum-idle: ${AI_DATASOURCE_MIN_IDLE}
+      connection-timeout: ${DATASOURCE_CONNECTION_TIMEOUT}
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      timeout: ${REDIS_TIMEOUT}
+      lettuce:
+        pool:
+          max-active: ${AI_REDIS_POOL_MAX_ACTIVE}
+          max-idle: ${AI_REDIS_POOL_MAX_IDLE}
+          min-idle: ${AI_REDIS_POOL_MIN_IDLE}
+          max-wait: ${REDIS_POOL_MAX_WAIT}
+  ai:
+    model:
+      chat: openai
+    openai:
+      base-url: ${DEEPSEEK_BASE_URL}
+      api-key: ${DEEPSEEK_API_KEY}
+      chat:
+        base-url: ${DEEPSEEK_BASE_URL}
+        completions-path: ${DEEPSEEK_COMPLETIONS_PATH}
+        options:
+          model: ${DEEPSEEK_MODEL}
+          temperature: ${DEEPSEEK_TEMPERATURE}
+
+feign:
+  sentinel:
+    enabled: ${FEIGN_SENTINEL_ENABLED}
+
+travel:
+  jwt:
+    secret: ${TRAVEL_JWT_SECRET}
+    expiration-ms: ${TRAVEL_JWT_EXPIRATION_MS}
+  service:
+    user-base-url: ${TRAVEL_USER_BASE_URL}
+  security:
+    white-list:
+      - /swagger-ui/**
+      - /v3/api-docs/**
+      - /doc.html
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl

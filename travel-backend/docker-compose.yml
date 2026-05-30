@@ -1,0 +1,491 @@
+services:
+  nacos:
+    image: ${NACOS_IMAGE}
+    container_name: nacos
+    environment:
+      - MODE=standalone
+      - SPRING_DATASOURCE_PLATFORM=mysql
+      - MYSQL_SERVICE_HOST=${MYSQL_HOST}
+      - MYSQL_SERVICE_PORT=${MYSQL_INTERNAL_PORT}
+      - MYSQL_SERVICE_USER=${MYSQL_ROOT_USER}
+      - MYSQL_SERVICE_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_SERVICE_DB_NAME=${NACOS_DB_NAME}
+      - JVM_XMS=${NACOS_JVM_XMS}
+      - JVM_XMX=${NACOS_JVM_XMX}
+      - TZ=${TZ}
+    ports:
+      - "${NACOS_PORT}:8848"
+      - "${NACOS_GRPC_PORT}:9848"
+      - "${NACOS_RAFT_PORT}:9849"
+    volumes:
+      - nacos-logs:/home/nacos/logs
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "bash -ec ': >/dev/tcp/127.0.0.1/8848 && : >/dev/tcp/127.0.0.1/9848'"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 60s
+    networks:
+      - travel-network
+    restart: "no"
+
+  mysql:
+    image: ${MYSQL_IMAGE}
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_CHARACTER_SET_SERVER: ${MYSQL_CHARACTER_SET_SERVER}
+      MYSQL_COLLATION_SERVER: ${MYSQL_COLLATION_SERVER}
+      TZ: ${TZ}
+    ports:
+      - "${MYSQL_HOST_PORT}:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u${MYSQL_ROOT_USER} -p${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 10s  #每隔10秒检查一次
+      timeout: 5s  #每次检查超过5秒没响应，就算超时失败
+      retries: 12  #最多重试12次，都失败才标记为不健康
+      start_period: 30s  #容器启动后，前30秒不判断失败（给MySQL启动时间）
+    networks:
+      - travel-network
+    restart: "no"   # 重启策略
+    command: >  # MySQL 启动参数
+      --default-authentication-plugin=mysql_native_password
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --init-connect='SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci'
+      --skip-character-set-client-handshake
+
+  rabbitmq:
+    image: ${RABBITMQ_IMAGE}
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      TZ: ${TZ}
+    ports:
+      - "${RABBITMQ_PORT}:5672"
+      - "${RABBITMQ_MANAGEMENT_PORT}:15672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+      - rabbitmq-logs:/var/log/rabbitmq
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    networks:
+      - travel-network
+    restart: "no"
+
+  redis:
+    image: ${REDIS_IMAGE}
+    container_name: redis
+    ports:
+      - "${REDIS_PORT}:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+    networks:
+      - travel-network
+    restart: "no"
+
+  seata-server:
+    image: ${SEATA_IMAGE}
+    container_name: seata-server
+    env_file:
+      - .env.example
+    environment:
+      SEATA_PORT: ${SEATA_SERVICE_PORT}
+      SEATA_IP: ${SEATA_HOST}
+      TZ: ${TZ}
+    volumes:
+      - ./seata/application.yml:/seata-server/resources/application.yml
+    ports:
+      - "${SEATA_SERVICE_PORT}:${SEATA_SERVICE_PORT}"
+      - "${SEATA_CONSOLE_PORT}:${SEATA_CONSOLE_PORT}"
+    healthcheck:
+      test: ["CMD-SHELL", "bash -ec '</dev/tcp/127.0.0.1/${SEATA_SERVICE_PORT}'"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 40s
+    depends_on:
+      nacos:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    networks:
+      - travel-network
+    restart: "no"
+
+  elasticsearch:
+    image: ${ELASTICSEARCH_IMAGE}
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - cluster.name=${ELASTICSEARCH_CLUSTER_NAME}
+      - node.name=${ELASTICSEARCH_NODE_NAME}
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=${ELASTICSEARCH_JAVA_OPTS}
+      - xpack.security.enabled=false
+      - TZ=${TZ}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "${ELASTICSEARCH_HOST_PORT}:9200"
+      - "${ELASTICSEARCH_TRANSPORT_PORT}:9300"
+    volumes:
+      - es-data:/usr/share/elasticsearch/data
+      - ./es-plugins:/usr/share/elasticsearch/plugins
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:9200/_cluster/health?wait_for_status=yellow&timeout=1s >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+    networks:
+      - travel-network
+    restart: "no"
+
+  kibana:
+    image: ${KIBANA_IMAGE}
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=${KIBANA_ELASTICSEARCH_HOSTS}
+      - I18N_LOCALE=zh-CN
+      - TZ=${TZ}
+    ports:
+      - "${KIBANA_PORT}:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:5601/api/status >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+    networks:
+      - travel-network
+    restart: "no"
+
+  skywalking-oap:
+    image: ${SKYWALKING_OAP_IMAGE}
+    container_name: skywalking-oap
+    environment:
+      SW_STORAGE: h2
+      TZ: ${TZ}
+    ports:
+      - "${SKYWALKING_GRPC_PORT}:11800"
+      - "${SKYWALKING_HTTP_PORT}:12800"
+    healthcheck:
+      test: ["CMD-SHELL", "bash -ec '</dev/tcp/127.0.0.1/11800'"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 40s
+    networks:
+      - travel-network
+    restart: "no"
+
+  skywalking-ui:
+    image: ${SKYWALKING_UI_IMAGE}
+    container_name: skywalking-ui
+    environment:
+      SW_OAP_ADDRESS: ${SKYWALKING_UI_OAP_ADDRESS}
+      TZ: ${TZ}
+    ports:
+      - "${SKYWALKING_UI_PORT}:${SKYWALKING_UI_INTERNAL_PORT}"
+    depends_on:
+      skywalking-oap:
+        condition: service_healthy
+    networks:
+      - travel-network
+    restart: "no"
+
+  xxl-job-admin:
+    image: ${XXL_JOB_ADMIN_IMAGE}
+    container_name: xxl-job-admin
+    env_file:
+      - .env.example
+    environment:
+      PARAMS: "--spring.datasource.url=jdbc:mysql://mysql:3306/${XXL_JOB_DB_NAME}?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai --spring.datasource.username=${MYSQL_ROOT_USER} --spring.datasource.password=${MYSQL_ROOT_PASSWORD} --xxl.job.accessToken=${XXL_JOB_ACCESS_TOKEN}"
+      TZ: ${TZ}
+    ports:
+      - "${XXL_JOB_ADMIN_PORT}:${XXL_JOB_ADMIN_INTERNAL_PORT}"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "bash -ec '</dev/tcp/127.0.0.1/${XXL_JOB_ADMIN_INTERNAL_PORT}'"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 40s
+    networks:
+      - travel-network
+    restart: "no"
+
+  travel-gateway:
+    build:
+      context: ./travel-gateway
+      dockerfile: Dockerfile
+      args:
+        SKYWALKING_AGENT_IMAGE: ${SKYWALKING_AGENT_IMAGE}
+        JAVA_RUNTIME_IMAGE: ${JAVA_RUNTIME_IMAGE}
+        TRAVEL_GATEWAY_PORT: ${TRAVEL_GATEWAY_PORT}
+    container_name: travel-gateway
+    env_file:
+      - .env.example
+    environment:
+      SW_AGENT_NAME: travel-gateway
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: ${SKYWALKING_COLLECTOR_BACKEND_SERVICES}
+    ports:
+      - "${TRAVEL_GATEWAY_PORT}:${TRAVEL_GATEWAY_PORT}"
+    depends_on:
+      nacos:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      skywalking-oap:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "bash -ec '</dev/tcp/127.0.0.1/${TRAVEL_GATEWAY_PORT}'"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+    networks:
+      - travel-network
+    restart: "no"
+
+  travel-nginx:
+    image: ${NGINX_IMAGE}
+    container_name: travel-nginx
+    env_file:
+      - .env.example
+    environment:
+      TRAVEL_GATEWAY_PORT: ${TRAVEL_GATEWAY_PORT}
+      NGINX_HOME_CACHE_TTL: ${NGINX_HOME_CACHE_TTL}
+      NGINX_CACHE_MAX_SIZE: ${NGINX_CACHE_MAX_SIZE}
+      NGINX_CACHE_INACTIVE: ${NGINX_CACHE_INACTIVE}
+      NGINX_WORKER_CONNECTIONS: ${NGINX_WORKER_CONNECTIONS}
+      NGINX_WORKER_RLIMIT_NOFILE: ${NGINX_WORKER_RLIMIT_NOFILE}
+      NGINX_KEEPALIVE_TIMEOUT: ${NGINX_KEEPALIVE_TIMEOUT}
+      NGINX_KEEPALIVE_REQUESTS: ${NGINX_KEEPALIVE_REQUESTS}
+      NGINX_GZIP_COMP_LEVEL: ${NGINX_GZIP_COMP_LEVEL}
+      NGINX_GZIP_MIN_LENGTH: ${NGINX_GZIP_MIN_LENGTH}
+      NGINX_UPSTREAM_KEEPALIVE: ${NGINX_UPSTREAM_KEEPALIVE}
+      TZ: ${TZ}
+    ports:
+      - "${NGINX_PORT}:80"
+    command: >
+      sh -c "envsubst '$$NGINX_WORKER_RLIMIT_NOFILE $$NGINX_WORKER_CONNECTIONS $$NGINX_KEEPALIVE_TIMEOUT $$NGINX_KEEPALIVE_REQUESTS $$NGINX_GZIP_COMP_LEVEL $$NGINX_GZIP_MIN_LENGTH' < /etc/nginx/templates/nginx.conf.template > /etc/nginx/nginx.conf
+      && envsubst '$$TRAVEL_GATEWAY_PORT $$NGINX_CACHE_MAX_SIZE $$NGINX_CACHE_INACTIVE $$NGINX_HOME_CACHE_TTL $$NGINX_UPSTREAM_KEEPALIVE' < /etc/nginx/templates/travel.conf.template > /etc/nginx/travel.conf
+      && nginx -g 'daemon off;'"
+    volumes:
+      - ./nginx/nginx.conf.template:/etc/nginx/templates/nginx.conf.template:ro
+      - ./nginx/travel.conf.template:/etc/nginx/templates/travel.conf.template:ro
+      - nginx-cache:/var/cache/nginx/travel
+    depends_on:
+      travel-gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/health | grep ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
+    networks:
+      - travel-network
+    restart: "no"
+
+  travel-user:
+    build:
+      context: ./travel-user
+      dockerfile: Dockerfile
+      args:
+        SKYWALKING_AGENT_IMAGE: ${SKYWALKING_AGENT_IMAGE}
+        JAVA_RUNTIME_IMAGE: ${JAVA_RUNTIME_IMAGE}
+        TRAVEL_USER_PORT: ${TRAVEL_USER_PORT}
+#    container_name: travel-user
+    env_file:
+      - .env.example
+    environment:
+      SW_AGENT_NAME: travel-user
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: ${SKYWALKING_COLLECTOR_BACKEND_SERVICES}
+    volumes:
+      - ./uploads:/app/uploads
+    depends_on:
+      nacos:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      seata-server:
+        condition: service_healthy
+      skywalking-oap:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "bash -ec '</dev/tcp/127.0.0.1/${TRAVEL_USER_PORT}'"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+    networks:
+      - travel-network
+    restart: "no"
+
+  travel-product:
+    build:
+      context: ./travel-product
+      dockerfile: Dockerfile
+      args:
+        SKYWALKING_AGENT_IMAGE: ${SKYWALKING_AGENT_IMAGE}
+        JAVA_RUNTIME_IMAGE: ${JAVA_RUNTIME_IMAGE}
+        TRAVEL_PRODUCT_PORT: ${TRAVEL_PRODUCT_PORT}
+    container_name: travel-product
+    env_file:
+      - .env.example
+    environment:
+      SW_AGENT_NAME: travel-product
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: ${SKYWALKING_COLLECTOR_BACKEND_SERVICES}
+    ports:
+      - "${TRAVEL_PRODUCT_PORT}:${TRAVEL_PRODUCT_PORT}"
+    volumes:
+      - ./uploads:/app/uploads
+      - nginx-cache:/var/cache/nginx/travel
+    depends_on:
+      nacos:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+      travel-user:
+        condition: service_healthy
+      skywalking-oap:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "bash -ec '</dev/tcp/127.0.0.1/${TRAVEL_PRODUCT_PORT}'"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+    networks:
+      - travel-network
+    restart: "no"
+
+  travel-order:
+    build:
+      context: ./travel-order
+      dockerfile: Dockerfile
+      args:
+        SKYWALKING_AGENT_IMAGE: ${SKYWALKING_AGENT_IMAGE}
+        JAVA_RUNTIME_IMAGE: ${JAVA_RUNTIME_IMAGE}
+        TRAVEL_ORDER_PORT: ${TRAVEL_ORDER_PORT}
+    container_name: travel-order
+    env_file:
+      - .env.example
+    environment:
+      SW_AGENT_NAME: travel-order
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: ${SKYWALKING_COLLECTOR_BACKEND_SERVICES}
+    ports:
+      - "${TRAVEL_ORDER_PORT}:${TRAVEL_ORDER_PORT}"
+      - "${XXL_JOB_ORDER_EXECUTOR_PORT}:${XXL_JOB_ORDER_EXECUTOR_PORT}"
+    depends_on:
+      nacos:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      seata-server:
+        condition: service_healthy
+      xxl-job-admin:
+        condition: service_healthy
+      travel-product:
+        condition: service_healthy
+      skywalking-oap:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "bash -ec '</dev/tcp/127.0.0.1/${TRAVEL_ORDER_PORT}'"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+    networks:
+      - travel-network
+    restart: "no"
+
+  travel-ai:
+    build:
+      context: ./travel-ai
+      dockerfile: Dockerfile
+      args:
+        SKYWALKING_AGENT_IMAGE: ${SKYWALKING_AGENT_IMAGE}
+        JAVA_RUNTIME_IMAGE: ${JAVA_RUNTIME_IMAGE}
+        TRAVEL_AI_PORT: ${TRAVEL_AI_PORT}
+    container_name: travel-ai
+    env_file:
+      - .env.example
+    environment:
+      SW_AGENT_NAME: travel-ai
+      SW_AGENT_COLLECTOR_BACKEND_SERVICES: ${SKYWALKING_COLLECTOR_BACKEND_SERVICES}
+    ports:
+      - "${TRAVEL_AI_PORT}:${TRAVEL_AI_PORT}"
+    depends_on:
+      nacos:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      skywalking-oap:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "bash -ec '</dev/tcp/127.0.0.1/${TRAVEL_AI_PORT}'"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+    networks:
+      - travel-network
+    restart: "no"
+
+volumes:
+  nacos-logs:
+  mysql-data:
+  rabbitmq-data:
+  rabbitmq-logs:
+  redis-data:
+  es-data:
+  nginx-cache:
+
+networks:
+  travel-network:
+    driver: bridge

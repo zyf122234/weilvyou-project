@@ -1,0 +1,1 @@
+import{I as e}from"./index-CqAkotmw.js";function n(r){return e.post("/order/orders",r)}function o(r){return e.patch(`/order/orders/${r}/pay`)}function s(r){return e.patch(`/order/orders/${r}/cancel`)}function a(r){return e.get("/order/orders/mine",{params:r})}function c(r){return e.get("/order/orders/merchant",{params:r})}export{n as a,a as b,s as c,c as l,o as p};

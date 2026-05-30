@@ -1,0 +1,114 @@
+server:
+  port: ${TRAVEL_USER_PORT}
+
+spring:
+  config:
+    import:
+      - optional:file:.env[.properties]
+      - optional:file:../.env[.properties]
+  application:
+    name: travel-user
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR}
+      config:
+        server-addr: ${NACOS_SERVER_ADDR}
+        file-extension: yml
+        import-check:
+          enabled: false
+  datasource:
+    url: ${USER_DATASOURCE_URL}
+    username: ${MYSQL_ROOT_USER}
+    password: ${MYSQL_ROOT_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: ${USER_DATASOURCE_MAX_POOL_SIZE}
+      minimum-idle: ${USER_DATASOURCE_MIN_IDLE}
+      connection-timeout: ${DATASOURCE_CONNECTION_TIMEOUT}
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_DEFAULT_USER}
+    password: ${RABBITMQ_DEFAULT_PASS}
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      timeout: ${REDIS_TIMEOUT}
+      lettuce:
+        pool:
+          max-active: ${REDIS_POOL_MAX_ACTIVE}
+          max-idle: ${REDIS_POOL_MAX_IDLE}
+          min-idle: ${REDIS_POOL_MIN_IDLE}
+          max-wait: ${REDIS_POOL_MAX_WAIT}
+  cache:
+    type: redis
+    redis:
+      time-to-live: ${CACHE_REDIS_TIME_TO_LIVE}
+      cache-null-values: ${CACHE_REDIS_CACHE_NULL_VALUES}
+  servlet:
+    multipart:
+      max-file-size: ${TRAVEL_UPLOAD_MAX_FILE_SIZE}
+      max-request-size: ${TRAVEL_UPLOAD_MAX_REQUEST_SIZE}
+
+travel:
+  jwt:
+    secret: ${TRAVEL_JWT_SECRET}
+    expiration-ms: ${TRAVEL_JWT_EXPIRATION_MS}
+  sentinel:
+    login-qps: ${USER_LOGIN_SENTINEL_QPS}
+  service:
+    order-host: ${USER_ORDER_SERVICE_HOST}
+  upload:
+    base-dir: ${TRAVEL_UPLOAD_BASE_DIR}
+    avatar-dir: ${TRAVEL_UPLOAD_AVATAR_DIR}
+  security:
+    white-list:
+      - /user/login
+      - /user/register
+      - /uploads/**
+      - /swagger-ui/**
+      - /v3/api-docs/**
+      - /doc.html
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+seata:
+  application-id: ${spring.application.name}
+  tx-service-group: ${SEATA_TX_SERVICE_GROUP}
+  registry:
+    type: nacos
+    nacos:
+      application: ${SEATA_HOST}
+      server-addr: ${NACOS_SERVER_ADDR}
+      group: ${SEATA_CONFIG_GROUP}
+      namespace: ${NACOS_NAMESPACE:}
+      cluster: ${SEATA_CLUSTER}
+      username: ${NACOS_USERNAME:}
+      password: ${NACOS_PASSWORD:}
+  config:
+    type: nacos
+    nacos:
+      server-addr: ${NACOS_SERVER_ADDR}
+      group: ${SEATA_CONFIG_GROUP}
+      namespace: ${NACOS_NAMESPACE:}
+      data-id: ${SEATA_CONFIG_DATA_ID}
+      username: ${NACOS_USERNAME:}
+      password: ${NACOS_PASSWORD:}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn

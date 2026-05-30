@@ -1,0 +1,50 @@
+server:
+  port: ${SEATA_CONSOLE_PORT}
+
+spring:
+  application:
+    name: ${SEATA_HOST}
+
+logging:
+  config: classpath:logback-spring.xml
+  file:
+    path: ${SEATA_LOG_HOME}
+  extend:
+    logstash-appender:
+      destination: ${SEATA_LOGSTASH_DESTINATION}
+    kafka-appender:
+      bootstrap-servers: ${SEATA_KAFKA_BOOTSTRAP_SERVERS}
+      topic: ${SEATA_KAFKA_LOG_TOPIC}
+
+console:
+  user:
+    username: ${SEATA_CONSOLE_USERNAME}
+    password: ${SEATA_CONSOLE_PASSWORD}
+
+seata:
+  config:
+    type: nacos
+    nacos:
+      server-addr: ${NACOS_SERVER_ADDR}
+      namespace: ${NACOS_NAMESPACE:}
+      group: ${SEATA_CONFIG_GROUP}
+      username: ${NACOS_USERNAME:}
+      password: ${NACOS_PASSWORD:}
+      data-id: ${SEATA_CONFIG_DATA_ID}
+  registry:
+    type: nacos
+    nacos:
+      application: ${SEATA_HOST}
+      server-addr: ${NACOS_SERVER_ADDR}
+      group: ${SEATA_CONFIG_GROUP}
+      namespace: ${NACOS_NAMESPACE:}
+      cluster: ${SEATA_CLUSTER}
+      username: ${NACOS_USERNAME:}
+      password: ${NACOS_PASSWORD:}
+  server:
+    service-port: ${SEATA_SERVICE_PORT}
+  security:
+    secretKey: ${SEATA_SECRET_KEY}
+    tokenValidityInMilliseconds: ${SEATA_TOKEN_VALIDITY_MS}
+    ignore:
+      urls: /,/**/*.css,/**/*.js,/**/*.html,/**/*.map,/**/*.svg,/**/*.png,/**/*.jpeg,/**/*.ico,/api/v1/auth/login,/metadata/v1/**

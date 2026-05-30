@@ -1,0 +1,88 @@
+server:
+  port: ${TRAVEL_ORDER_PORT}
+
+spring:
+  config:
+    import:
+      - optional:file:.env[.properties]
+      - optional:file:../.env[.properties]
+  application:
+    name: travel-order
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR}
+      config:
+        server-addr: ${NACOS_SERVER_ADDR}
+        file-extension: yml
+        import-check:
+          enabled: false
+  datasource:
+    url: ${ORDER_DATASOURCE_URL}
+    username: ${MYSQL_ROOT_USER}
+    password: ${MYSQL_ROOT_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      timeout: ${REDIS_TIMEOUT}
+
+feign:
+  sentinel:
+    enabled: ${FEIGN_SENTINEL_ENABLED}
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+seata:
+  application-id: ${spring.application.name}
+  tx-service-group: ${SEATA_TX_SERVICE_GROUP}
+  registry:
+    type: nacos
+    nacos:
+      application: ${SEATA_HOST}
+      server-addr: ${NACOS_SERVER_ADDR}
+      group: ${SEATA_CONFIG_GROUP}
+      namespace: ${NACOS_NAMESPACE:}
+      cluster: ${SEATA_CLUSTER}
+      username: ${NACOS_USERNAME:}
+      password: ${NACOS_PASSWORD:}
+  config:
+    type: nacos
+    nacos:
+      server-addr: ${NACOS_SERVER_ADDR}
+      group: ${SEATA_CONFIG_GROUP}
+      namespace: ${NACOS_NAMESPACE:}
+      data-id: ${SEATA_CONFIG_DATA_ID}
+      username: ${NACOS_USERNAME:}
+      password: ${NACOS_PASSWORD:}
+
+xxl:
+  job:
+    enabled: ${XXL_JOB_ENABLED:true}
+    admin:
+      addresses: ${XXL_JOB_ADMIN_ADDRESSES}
+    accessToken: ${XXL_JOB_ACCESS_TOKEN:}
+    executor:
+      appname: ${XXL_JOB_ORDER_EXECUTOR_APPNAME}
+      address: ${XXL_JOB_ORDER_EXECUTOR_ADDRESS:}
+      ip: ${XXL_JOB_ORDER_EXECUTOR_IP:}
+      port: ${XXL_JOB_ORDER_EXECUTOR_PORT}
+      logpath: ${XXL_JOB_ORDER_EXECUTOR_LOG_PATH}
+      logretentiondays: ${XXL_JOB_ORDER_EXECUTOR_LOG_RETENTION_DAYS}
+
+travel:
+  jwt:
+    secret: ${TRAVEL_JWT_SECRET}
+    expiration-ms: ${TRAVEL_JWT_EXPIRATION_MS}
+  service:
+    user-base-url: ${TRAVEL_USER_BASE_URL}
+  security:
+    white-list:
+      - /swagger-ui/**
+      - /v3/api-docs/**
+      - /doc.html
