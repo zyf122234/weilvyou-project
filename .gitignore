@@ -1,0 +1,11 @@
+### Java 项目忽略文件 ###
+target/
+*.jar
+*.war
+*.ear
+*.class
+*.iml
+.idea/
+.DS_Store
+logs/
+*.log
