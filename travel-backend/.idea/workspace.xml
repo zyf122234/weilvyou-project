@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f725ca3-24fd-402f-9baa-37f9c1b7991f" name="更改" comment="" />
+    <list default="true" id="8f725ca3-24fd-402f-9baa-37f9c1b7991f" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nginx/travel.conf.template" beforeDir="false" afterPath="$PROJECT_DIR$/nginx/travel.conf.template" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,6 +18,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;zyf122234&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/zyf122234/weilvyou-project.git&quot;,
+    &quot;accountId&quot;: &quot;76fa4bbc-fb53-4863-a0e0-9b61773cb170&quot;
+  }
+}</component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -45,52 +62,54 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Docker.docker-compose.yml.elasticsearch: Compose 部署.executor": "Run",
-    "Docker.docker-compose.yml.kibana: Compose 部署.executor": "Run",
-    "Docker.docker-compose.yml.redis: Compose 部署.executor": "Run",
-    "Docker.docker-compose.yml.seata-server: Compose 部署.executor": "Run",
-    "Docker.docker-compose.yml.travel-admin: Compose 部署.executor": "Run",
-    "Docker.docker-compose.yml.travel-api: Compose 部署.executor": "Run",
-    "Docker.docker-compose.yml.travel-gateway: Compose 部署.executor": "Run",
-    "Docker.docker-compose.yml.travel-user: Compose 部署.executor": "Run",
-    "Docker.docker-compose.yml: Compose 部署.executor": "Run",
-    "Maven.travel-parent [clean].executor": "Run",
-    "Maven.travel-parent [compile].executor": "Run",
-    "Maven.travel-user [clean].executor": "Run",
-    "Maven.travel-user [compile].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.GatewayApplication.executor": "Run",
-    "Spring Boot.UserApplication (1).executor": "Run",
-    "Spring Boot.UserApplication.executor": "Run",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/零碎/code/微服务项目实习/travel-backend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "模块",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "advanced.settings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Docker.docker-compose.yml.elasticsearch: Compose 部署.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.kibana: Compose 部署.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.redis: Compose 部署.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.seata-server: Compose 部署.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.travel-admin: Compose 部署.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.travel-api: Compose 部署.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.travel-gateway: Compose 部署.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml.travel-user: Compose 部署.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.docker-compose.yml: Compose 部署.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.travel-parent [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.travel-parent [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.travel-user [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.travel-user [compile].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.GatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.UserApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.UserApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/零碎/code/微服务项目实习/travel-backend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;模块&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\零碎\code\微服务项目实习\travel-backend\frontend" />
       <recent name="D:\零碎\code\微服务项目实习\travel-backend\Jmeter" />
     </key>
   </component>
@@ -115,7 +134,13 @@
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Docker.docker-compose.yml.seata-server: Compose 部署">
+  <component name="RunManager" selected="Docker.docker-compose.yml: Compose 部署">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="travel-backend" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <module name="travel-backend" />
       <method v="2">
@@ -125,6 +150,34 @@
     <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
       <module name="travel-backend" />
       <option name="filePath" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="travel-backend" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="travel-backend" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
@@ -161,6 +214,25 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="RUN_TOOL" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <module name="travel-backend" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="RUN_TOOL" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
       <method v="2" />
     </configuration>
     <configuration default="true" type="JetRunConfigurationType">
@@ -204,9 +276,30 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="AdminApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="travel-admin" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.travel.admin.AdminApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="AiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="travel-ai" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.travel.ai.AiApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="travel-ai" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.travel.ai.AiApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="travel-gateway" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.travel.gateway.GatewayApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -225,9 +318,30 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="OrderApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="travel-order" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.travel.order.OrderApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ProductApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="travel-product" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.travel.product.ProductApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ProductApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="travel-product" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.travel.product.ProductApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="travel-user" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.travel.user.UserApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -258,12 +372,46 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <configuration name="docker-compose.yml: Compose 部署" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <configuration name="docker-compose.yml.elasticsearch: Compose 部署" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
           <option name="services">
             <list>
               <option value="elasticsearch" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yml.elasticsearch: Compose 部署" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="elasticsearch" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yml.kibana: Compose 部署" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="kibana" />
             </list>
           </option>
           <option name="sourceFilePath" value="docker-compose.yml" />
@@ -310,6 +458,32 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <configuration name="docker-compose.yml.seata-server: Compose 部署" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="seata-server" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="docker-compose.yml.travel-admin: Compose 部署" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="travel-admin" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <configuration name="docker-compose.yml.travel-admin: Compose 部署" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
@@ -325,11 +499,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Docker.docker-compose.yml: Compose 部署" />
         <item itemvalue="Docker.docker-compose.yml.seata-server: Compose 部署" />
         <item itemvalue="Docker.docker-compose.yml.elasticsearch: Compose 部署" />
         <item itemvalue="Docker.docker-compose.yml.kibana: Compose 部署" />
         <item itemvalue="Docker.docker-compose.yml.travel-admin: Compose 部署" />
-        <item itemvalue="Docker.docker-compose.yml.redis: Compose 部署" />
       </list>
     </recent_temporary>
   </component>
@@ -379,6 +553,9 @@
       <workItem from="1780100176482" duration="313000" />
       <workItem from="1780100790476" duration="7640000" />
       <workItem from="1780124515519" duration="5331000" />
+      <workItem from="1780199786370" duration="631000" />
+      <workItem from="1780386632274" duration="2577000" />
+      <workItem from="1780464561953" duration="5971000" />
     </task>
     <servers />
   </component>
