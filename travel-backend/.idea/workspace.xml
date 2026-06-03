@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f725ca3-24fd-402f-9baa-37f9c1b7991f" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nginx/travel.conf.template" beforeDir="false" afterPath="$PROJECT_DIR$/nginx/travel.conf.template" afterDir="false" />
-    </list>
+    <list default="true" id="8f725ca3-24fd-402f-9baa-37f9c1b7991f" name="更改" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -555,7 +550,7 @@
       <workItem from="1780124515519" duration="5331000" />
       <workItem from="1780199786370" duration="631000" />
       <workItem from="1780386632274" duration="2577000" />
-      <workItem from="1780464561953" duration="5971000" />
+      <workItem from="1780464561953" duration="6346000" />
     </task>
     <servers />
   </component>
