@@ -8,9 +8,11 @@ RUN apt-get update && apt-get install -y openjdk-17-jdk && rm -rf /var/lib/apt/l
 
 WORKDIR /app
 
+ENV JAVA_OPTS="-Xms256m -Xmx512m -XX:MaxMetaspaceSize=256m -XX:+UseContainerSupport -XX:+ExitOnOutOfMemoryError"
+
 COPY --from=skywalking-agent /skywalking/agent /skywalking/agent
 COPY target/travel-ai-1.0.0.jar app.jar
 
 EXPOSE ${TRAVEL_AI_PORT}
 
-ENTRYPOINT ["java", "-javaagent:/skywalking/agent/skywalking-agent.jar", "-jar", "app.jar"]
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -javaagent:/skywalking/agent/skywalking-agent.jar -jar app.jar"]

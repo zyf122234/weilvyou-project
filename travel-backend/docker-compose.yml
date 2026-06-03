@@ -255,6 +255,8 @@ services:
     environment:
       SW_AGENT_NAME: travel-gateway
       SW_AGENT_COLLECTOR_BACKEND_SERVICES: ${SKYWALKING_COLLECTOR_BACKEND_SERVICES}
+      JAVA_OPTS: ${TRAVEL_GATEWAY_JAVA_OPTS}
+    mem_limit: ${TRAVEL_GATEWAY_MEMORY_LIMIT}
     ports:
       - "${TRAVEL_GATEWAY_PORT}:${TRAVEL_GATEWAY_PORT}"
     depends_on:
@@ -334,6 +336,8 @@ services:
     environment:
       SW_AGENT_NAME: travel-user
       SW_AGENT_COLLECTOR_BACKEND_SERVICES: ${SKYWALKING_COLLECTOR_BACKEND_SERVICES}
+      JAVA_OPTS: ${TRAVEL_USER_JAVA_OPTS}
+    mem_limit: ${TRAVEL_USER_MEMORY_LIMIT}
     volumes:
       - ./uploads:/app/uploads
     depends_on:
@@ -373,6 +377,8 @@ services:
     environment:
       SW_AGENT_NAME: travel-product
       SW_AGENT_COLLECTOR_BACKEND_SERVICES: ${SKYWALKING_COLLECTOR_BACKEND_SERVICES}
+      JAVA_OPTS: ${TRAVEL_PRODUCT_JAVA_OPTS}
+    mem_limit: ${TRAVEL_PRODUCT_MEMORY_LIMIT}
     ports:
       - "${TRAVEL_PRODUCT_PORT}:${TRAVEL_PRODUCT_PORT}"
     volumes:
@@ -415,6 +421,8 @@ services:
     environment:
       SW_AGENT_NAME: travel-order
       SW_AGENT_COLLECTOR_BACKEND_SERVICES: ${SKYWALKING_COLLECTOR_BACKEND_SERVICES}
+      JAVA_OPTS: ${TRAVEL_ORDER_JAVA_OPTS}
+    mem_limit: ${TRAVEL_ORDER_MEMORY_LIMIT}
     ports:
       - "${TRAVEL_ORDER_PORT}:${TRAVEL_ORDER_PORT}"
       - "${XXL_JOB_ORDER_EXECUTOR_PORT}:${XXL_JOB_ORDER_EXECUTOR_PORT}"
@@ -457,6 +465,8 @@ services:
     environment:
       SW_AGENT_NAME: travel-ai
       SW_AGENT_COLLECTOR_BACKEND_SERVICES: ${SKYWALKING_COLLECTOR_BACKEND_SERVICES}
+      JAVA_OPTS: ${TRAVEL_AI_JAVA_OPTS}
+    mem_limit: ${TRAVEL_AI_MEMORY_LIMIT}
     ports:
       - "${TRAVEL_AI_PORT}:${TRAVEL_AI_PORT}"
     depends_on:
