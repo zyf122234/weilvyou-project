@@ -312,6 +312,95 @@ npm run build
 http://localhost:5173
 ```
 
+## 服务器部署与公网访问
+
+项目在 Docker Compose 环境中通过 `travel-nginx` 作为统一入口。Nginx 负责提供前端静态页面，并将 `/api/` 请求反向代理到 `travel-gateway`。
+
+生产或服务器环境推荐访问入口：
+
+```text
+http://服务器公网IP/
+```
+
+如果绑定了域名，也可以访问：
+
+```text
+http://你的域名/
+```
+
+### 部署流程
+
+1. 构建前端静态资源
+
+   ```bash
+   cd vue3-app
+   npm install
+   npm run build
+   ```
+
+2. 将前端构建产物放到后端 Nginx 挂载目录
+
+   `docker-compose.yml` 中 `travel-nginx` 挂载的是：
+
+   ```text
+   ./frontend/dist:/usr/share/nginx/html:ro
+   ```
+
+   因此服务器部署时需要保证后端目录下存在：
+
+   ```text
+   travel-backend/frontend/dist
+   ```
+
+   该目录内容应来自 `vue3-app/dist`。
+
+3. 构建并启动后端服务
+
+   ```bash
+   cd travel-backend
+   mvn -DskipTests package
+   docker compose up -d
+   ```
+
+4. 检查容器健康状态
+
+   ```bash
+   docker compose ps
+   ```
+
+5. 访问公网入口
+
+   ```text
+   http://服务器公网IP/
+   ```
+
+### 公网端口说明
+
+对外访问完整项目通常只需要开放：
+
+| 端口 | 用途 |
+| ---: | --- |
+| 80 | Nginx 统一入口，提供前端页面并代理 `/api/` |
+| 443 | HTTPS 入口，配置证书后使用 |
+
+云服务器安全组、防火墙或宝塔面板中需要放行 `80` 端口。如果配置 HTTPS，则同时放行 `443` 端口。
+
+不建议向公网开放 MySQL、Redis、RabbitMQ、Nacos、Elasticsearch、Seata、SkyWalking、XXL-JOB 等内部或管理端口。调试时如需访问这些控制台，建议仅允许自己的固定 IP 访问，或使用 SSH 隧道。
+
+### 访问链路
+
+```text
+浏览器
+  -> http://服务器公网IP/
+  -> travel-nginx:80
+  -> 前端静态页面
+  -> /api/* 请求
+  -> travel-gateway:8080
+  -> travel-user / travel-product / travel-order / travel-ai
+```
+
+前端请求使用相对路径 `/api`，因此部署到服务器后通常不需要把前端接口地址改成公网 IP；只要浏览器访问的是 Nginx 入口，接口请求就会自动走同一个域名或 IP。
+
 ## 常用访问地址
 
 | 服务 | 地址 |
@@ -533,11 +622,15 @@ travel-order 支付订单
 
    `travel-product` 和 `travel-order` 当前存在 MyBatis SQL 输出配置，方便调试，但生产环境建议关闭或按 profile 区分。
 
-4. 前端构建存在大 chunk 警告
+4. 公网部署时只开放必要入口
+
+   Docker Compose 中多个基础组件和管理控制台都配置了宿主机端口映射。服务器部署时建议安全组只开放 `80/443`，其他端口仅允许内网或固定管理 IP 访问。
+
+5. 前端构建存在大 chunk 警告
 
    当前前端可正常构建，但部分打包产物较大。后续可以通过路由懒加载和 `manualChunks` 优化。
 
-5. 建议补充测试
+6. 建议补充测试
 
    当前项目更偏功能集成实战，单元测试和集成测试还不完整。建议优先补：
 
