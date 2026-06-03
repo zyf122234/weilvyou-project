@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f725ca3-24fd-402f-9baa-37f9c1b7991f" name="更改" comment="" />
+    <list default="true" id="8f725ca3-24fd-402f-9baa-37f9c1b7991f" name="更改" comment="新增了“服务器部署与公网访问”章节">
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/travel-ai/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/travel-ai/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/travel-gateway/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/travel-gateway/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/travel-order/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/travel-order/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/travel-product/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/travel-product/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/travel-user/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/travel-user/Dockerfile" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -550,11 +558,24 @@
       <workItem from="1780124515519" duration="5331000" />
       <workItem from="1780199786370" duration="631000" />
       <workItem from="1780386632274" duration="2577000" />
-      <workItem from="1780464561953" duration="6346000" />
+      <workItem from="1780464561953" duration="7109000" />
     </task>
+    <task id="LOCAL-00001" summary="新增了“服务器部署与公网访问”章节">
+      <option name="closed" value="true" />
+      <created>1780487337027</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1780487337028</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="新增了“服务器部署与公网访问”章节" />
+    <option name="LAST_COMMIT_MESSAGE" value="新增了“服务器部署与公网访问”章节" />
   </component>
 </project>

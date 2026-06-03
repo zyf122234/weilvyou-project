@@ -328,6 +328,46 @@ http://服务器公网IP/
 http://你的域名/
 ```
 
+### 服务器规格与内存配置
+
+本项目采用单机 Docker Compose 部署时，会同时启动 5 个业务服务以及 MySQL、Redis、RabbitMQ、Nacos、Elasticsearch、Kibana、Seata、SkyWalking、XXL-JOB、Nginx 等组件。
+
+推荐服务器规格：
+
+| 场景 | 推荐配置 | 说明 |
+| --- | --- | --- |
+| 学习演示 | 2 核 8GB | 可以运行完整项目，但建议减少压测强度，必要时关闭 Kibana 或 SkyWalking。 |
+| 常规部署 | 4 核 16GB | 推荐配置，适合完整启动所有组件和低到中等访问量。 |
+| 压测或准生产 | 8 核 32GB | 适合保留链路追踪、搜索、任务调度并进行 JMeter 压测。 |
+
+业务服务的 JVM 堆大小和容器内存上限已通过 `.env` 集中配置：
+
+```env
+TRAVEL_GATEWAY_JAVA_OPTS=-Xms256m -Xmx512m -XX:MaxMetaspaceSize=256m -XX:+UseContainerSupport -XX:+ExitOnOutOfMemoryError
+TRAVEL_USER_JAVA_OPTS=-Xms256m -Xmx768m -XX:MaxMetaspaceSize=256m -XX:+UseContainerSupport -XX:+ExitOnOutOfMemoryError
+TRAVEL_PRODUCT_JAVA_OPTS=-Xms256m -Xmx768m -XX:MaxMetaspaceSize=256m -XX:+UseContainerSupport -XX:+ExitOnOutOfMemoryError
+TRAVEL_ORDER_JAVA_OPTS=-Xms256m -Xmx768m -XX:MaxMetaspaceSize=256m -XX:+UseContainerSupport -XX:+ExitOnOutOfMemoryError
+TRAVEL_AI_JAVA_OPTS=-Xms256m -Xmx512m -XX:MaxMetaspaceSize=256m -XX:+UseContainerSupport -XX:+ExitOnOutOfMemoryError
+
+TRAVEL_GATEWAY_MEMORY_LIMIT=900m
+TRAVEL_USER_MEMORY_LIMIT=1200m
+TRAVEL_PRODUCT_MEMORY_LIMIT=1200m
+TRAVEL_ORDER_MEMORY_LIMIT=1200m
+TRAVEL_AI_MEMORY_LIMIT=900m
+```
+
+其中 `JAVA_OPTS` 控制业务服务 JVM 参数，`MEMORY_LIMIT` 控制 Docker 容器内存上限。容器上限需要大于 `-Xmx`，为 Metaspace、线程栈、SkyWalking Agent 和 JVM 原生内存留出空间。
+
+Elasticsearch 和 Nacos 也有独立内存参数：
+
+```env
+ELASTICSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
+NACOS_JVM_XMS=256m
+NACOS_JVM_XMX=256m
+```
+
+如果服务器只有 8GB 内存，可以优先降低业务服务 `-Xmx`，并关闭 Kibana、SkyWalking 等非核心观测组件；如果服务器为 16GB 或以上，当前默认值可以作为起步配置。
+
 ### 部署流程
 
 1. 构建前端静态资源
@@ -359,6 +399,7 @@ http://你的域名/
    ```bash
    cd travel-backend
    mvn -DskipTests package
+   docker compose build travel-gateway travel-user travel-product travel-order travel-ai
    docker compose up -d
    ```
 
@@ -626,11 +667,15 @@ travel-order 支付订单
 
    Docker Compose 中多个基础组件和管理控制台都配置了宿主机端口映射。服务器部署时建议安全组只开放 `80/443`，其他端口仅允许内网或固定管理 IP 访问。
 
-5. 前端构建存在大 chunk 警告
+5. JVM 内存参数按服务器规格调整
+
+   业务服务通过 `.env` 中的 `TRAVEL_*_JAVA_OPTS` 和 `TRAVEL_*_MEMORY_LIMIT` 控制 JVM 堆大小与 Docker 容器内存上限。修改 `.env` 后执行 `docker compose up -d` 即可让容器使用新配置；如果修改了各服务 `Dockerfile` 中的默认 `JAVA_OPTS`，需要重新执行 `docker compose build`。
+
+6. 前端构建存在大 chunk 警告
 
    当前前端可正常构建，但部分打包产物较大。后续可以通过路由懒加载和 `manualChunks` 优化。
 
-6. 建议补充测试
+7. 建议补充测试
 
    当前项目更偏功能集成实战，单元测试和集成测试还不完整。建议优先补：
 
