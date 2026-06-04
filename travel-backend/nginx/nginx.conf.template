@@ -42,6 +42,7 @@ http {
         application/xml
         text/css
         text/plain;
+    gunzip on;
 
     include /etc/nginx/travel.conf;
 }

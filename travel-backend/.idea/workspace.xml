@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f725ca3-24fd-402f-9baa-37f9c1b7991f" name="更改" comment="新增了“服务器部署与公网访问”章节">
+    <list default="true" id="8f725ca3-24fd-402f-9baa-37f9c1b7991f" name="更改" comment="Dockerfile新增内存分配">
       <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Jmeter/home-hotel-search-all-max-qps-test.jmx" beforeDir="false" afterPath="$PROJECT_DIR$/Jmeter/home-hotel-search-all-max-qps-test.jmx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/travel-ai/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/travel-ai/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/travel-gateway/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/travel-gateway/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/travel-order/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/travel-order/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/travel-product/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/travel-product/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/travel-user/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/travel-user/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nginx/nginx.conf.template" beforeDir="false" afterPath="$PROJECT_DIR$/nginx/nginx.conf.template" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nginx/travel.conf.template" beforeDir="false" afterPath="$PROJECT_DIR$/nginx/travel.conf.template" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/travel-gateway/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/travel-gateway/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -558,7 +558,8 @@
       <workItem from="1780124515519" duration="5331000" />
       <workItem from="1780199786370" duration="631000" />
       <workItem from="1780386632274" duration="2577000" />
-      <workItem from="1780464561953" duration="7109000" />
+      <workItem from="1780464561953" duration="7771000" />
+      <workItem from="1780544888670" duration="3795000" />
     </task>
     <task id="LOCAL-00001" summary="新增了“服务器部署与公网访问”章节">
       <option name="closed" value="true" />
@@ -568,7 +569,15 @@
       <option name="project" value="LOCAL" />
       <updated>1780487337028</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Dockerfile新增内存分配">
+      <option name="closed" value="true" />
+      <created>1780488252361</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1780488252361</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -576,6 +585,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="新增了“服务器部署与公网访问”章节" />
-    <option name="LAST_COMMIT_MESSAGE" value="新增了“服务器部署与公网访问”章节" />
+    <MESSAGE value="Dockerfile新增内存分配" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dockerfile新增内存分配" />
   </component>
 </project>
